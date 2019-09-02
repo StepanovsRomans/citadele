@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'com.google.cloud.tools.jib' version '1.5.0'
+}
+
+group = 'lv.citadele'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.google.cloud.tools.jib"
+
+jib {
+    from {
+        image = 'openjdk:13-ea-19-jdk-alpine3.9'
+    }
+    to {
+        image = "payment-form-core"
+        tags = ["0.0.1"]
+    }
+    container {
+        jvmFlags = ['-Xms256m', '-Xmx400m']
+        ports = ['9090']
+        format = 'Docker'
+        mainClass = 'lv.citadele.paymentformcore.PaymentFormCoreApplication'
+    }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'com.itextpdf:itextpdf:5.5.13.1'
+    implementation 'org.xhtmlrenderer:flying-saucer-pdf:9.1.18'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

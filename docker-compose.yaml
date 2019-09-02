@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web-server:
+    environment:
+      - SMTP_HOST=
+      - SMTP_PORT=
+      - SMTP_USERNAME=
+      - SMTP_PASSWORD=
+      - RECEIVER_EMAIL_ADDRESS=
+    build: .
+    ports:
+    - "9090:9090"
+    links:
+    - web-client
+    image: payment-form-core:0.0.1
+  web-client:
+    ports:
+    - "8080:8080"
+    image: payment-form-ui:0.0.1
+
+volumes:
+  logvolume01: {}
